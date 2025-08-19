@@ -316,6 +316,7 @@ function MPC(u0,batch,FR_price_sample, grid_price_sample)
     soc_list = ones(TotalHours)
     status_list = zeros(TotalHours)
     stage_cost_list = zeros(TotalHours)
+    delta_sei_list = zeros(TotalHours)
 
     retire_time = Totaltime
     retire_index = Nt_FR
@@ -333,6 +334,8 @@ function MPC(u0,batch,FR_price_sample, grid_price_sample)
         soc = csn_avg/csnmax
         capacity_remain_list[i_start_hour] = capacity_remain
         soc_list[i_start_hour] = soc
+        delta_sei_list[i_start_hour] = u0[Ncp+Ncn+7]
+
         if capacity_remain <= capacity_retire || i_start >= Nt_FR-Nt_FR_hour
             retire_time = TIME_FR[i_start]
             retire_index = i_start
@@ -414,6 +417,33 @@ function MPC(u0,batch,FR_price_sample, grid_price_sample)
     end
 
     println("elapsed time:     ", time() - start_time)
+    h_max = 0
+
+    for i=1:TotalHours
+        if stage_cost_list[i] !=0 || FR_band_list[i] !=0
+            h_max = i
+        end
+    end
+
+    if h_max > 0
+        data = zeros(h_max, 7)
+        for i=1:h_max
+            data[i,1] = i
+            data[i,2] = capacity_remain_list[i]
+            data[i,3] = soc_list[i]
+            data[i,4] = stage_cost_list[i]
+            data[i,5] = FR_band_list[i]
+            data[i,6] = buy_from_grid[i]
+            data[i,7] = delta_sei_list[i]
+        end
+
+    csv_filename = string("SimulationDataBatch", batch, ".csv")
+    
+    open(csv_filename, "w") do io
+        write(io, "Hour,Capacity_Remain,SOC,Operational_Profit,FR_Chosen_Band,Grid_Chosen_Band,SEI_Thickness\n")
+        writedlm(io, data, ',')
+        end
+    end
     file_name = string("TrainingDataBatch",batch,".jld")
     save(file_name, "X", X_TRAIN, "Y", Y_TRAIN)
 
