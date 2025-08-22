@@ -108,6 +108,13 @@ while hour <= max_horizon && !done
     end
 
     hour += 1
+    
+    if (hour - 1) % 24 == 0
+        day = (hour - 1) ÷ 24
+        println("########## Simulation progress: Completed Day $day ##########")
+        println("########## Capacity remaining after Day $day: $(env.current[6]) ##########")
+
+    end
 end
 
 # Save data to CSV
