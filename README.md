@@ -17,20 +17,20 @@ The project develops and evaluates a **multi-stage hierarchical control framewor
 
 The workflow follows several stages:
 
-1. **Low-Fidelity MPC Simulation:*** Generates state–action pairs to form the dataset for supervised learning.
-2. **Supervised Learning Pretraining:*** An actor–critic deep neural network is initialized using MPC-generated data.
+1. **Low-Fidelity MPC Simulation:** Generates state–action pairs to form the dataset for supervised learning.
+2. **Supervised Learning Pretraining:** An actor–critic deep neural network is initialized using MPC-generated data.
 
-3. **Reinforcement Learning Pretraining:*** The network is refined in a high-fidelity, degradation-aware environment.
+3. **Reinforcement Learning Pretraining:** The network is refined in a high-fidelity, degradation-aware environment.
 
-4. **Anchor-Based Adaptation:*** A degradation-unaware RL policy is trained with setpoint tracking capability.
+4. **Anchor-Based Adaptation:** A degradation-unaware RL policy is trained with setpoint tracking capability.
 
-5. **Hierarchical MPC–RL Integration:*** The trained RL agent is embedded into a hierarchical control scheme, where MPC provides high-level constraints and RL executes fast revenue-driven actions.
+5. **Hierarchical MPC–RL Integration:** The trained RL agent is embedded into a hierarchical control scheme, where MPC provides high-level constraints and RL executes fast revenue-driven actions.
 
 *The overall workflow is illustrated in Figure 1.*
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 ├── MPC/              # Low-fidelity MPC to generate state–action pairs
@@ -41,7 +41,7 @@ The workflow follows several stages:
 └── Data/             # PJM dataset (FR signals, FR prices, DAM energy prices)
 ---
 
-## 🖥️ Requirements
+## Requirements
 
 * Julia ≥ 1.9
 * [JuMP.jl](https://jump.dev/) (optimization modeling)
