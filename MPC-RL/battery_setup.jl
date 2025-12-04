@@ -424,7 +424,7 @@ function step_battery(FR_price_segment, grid_price_segment, signal_segment, FR_b
     reward1 = sum(FR_price_segment[h] * FR_band[h] - max(0,grid_band[h])*grid_price_segment[h] for h in 1:nHours_Horizon) # reward1 is the true profit
     reward2 = (sum(FR_price_segment[h] * FR_band[h] - max(0,grid_band[h])*grid_price_segment[h] for h in 1:nHours_Horizon)-5 *(soc_end - 0.5*capacity_remain)^2 -
     0.0 * expectedrevenue/(1-capacity_retire)/Qmax * (cf_e - cf0)) + tracking_penalty
-
+    soc_end = clamp(soc_end + 0.05 * randn(), 0.0, 1.0)
     return soc_end, capacity_remain, u0, reward1, reward2, done
 end
 
